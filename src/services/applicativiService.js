@@ -5,6 +5,7 @@ import {
 	updateDoc,
 	doc,
 	getDocs,
+	deleteDoc,
 } from 'firebase/firestore';
 
 const applicativiRef = collection(db, 'applicativi');
@@ -26,4 +27,10 @@ export async function updateApplicativo(id, data) {
 export async function getApplicativi() {
 	const snapshot = await getDocs(applicativiRef);
 	return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+}
+
+/** Elimina applicativo dal DB */
+export async function deleteApplicativo(id) {
+	const ref = doc(db, 'applicativi', id);
+	await deleteDoc(ref);
 }

@@ -9,11 +9,13 @@ export default function AddApplicativo({ onAdd }) {
 		certificati: '',
 		strumenti: '',
 	});
+
 	const [esercizio, setEsercizio] = useState(true);
 	const [collaudo, setCollaudo] = useState(false);
 	const [error, setError] = useState('');
+	const [loading, setLoading] = useState(false);
 
-	function handleSubmit(e) {
+	async function handleSubmit(e) {
 		e.preventDefault();
 		setError('');
 
@@ -27,14 +29,19 @@ export default function AddApplicativo({ onAdd }) {
 		}
 
 		const nuovo = {
-			id: Date.now(),
 			nome: nome.trim(),
 			descrizione: { ...descrizione },
 			esercizio,
 			collaudo,
+			dataCreazione: new Date().toISOString(),
 		};
 
-		onAdd(nuovo);
+		setLoading(true);
+		await onAdd(nuovo); // l'ID arriva da Firestore
+		setLoading(false);
+
+		// reset form
+		setNome('');
 		setDescrizione({
 			generali: '',
 			hostnames: '',
@@ -42,7 +49,6 @@ export default function AddApplicativo({ onAdd }) {
 			certificati: '',
 			strumenti: '',
 		});
-		setNome('');
 		setEsercizio(true);
 		setCollaudo(false);
 	}
@@ -50,6 +56,7 @@ export default function AddApplicativo({ onAdd }) {
 	return (
 		<div className='card add-card'>
 			<h2 className='card-title'>➕ Aggiungi Applicativo</h2>
+
 			<form onSubmit={handleSubmit} className='form'>
 				<label>
 					Nome Applicativo
@@ -142,8 +149,8 @@ export default function AddApplicativo({ onAdd }) {
 
 				{error && <p className='error'>{error}</p>}
 
-				<button type='submit' className='btn-primary'>
-					Aggiungi
+				<button type='submit' className='btn-primary' disabled={loading}>
+					{loading ? 'Salvataggio...' : 'Aggiungi'}
 				</button>
 			</form>
 		</div>

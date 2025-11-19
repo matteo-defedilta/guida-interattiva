@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ApplicativoItem from './ApplicativoItem';
 
-export default function ApplicativiList({ items = [], onUpdate }) {
+export default function ApplicativiList({ items = [], onUpdate, onDelete }) {
 	const [tab, setTab] = useState('esercizio');
 	const [query, setQuery] = useState('');
 
@@ -11,6 +11,7 @@ export default function ApplicativiList({ items = [], onUpdate }) {
 
 		if (!query.trim()) return true;
 		const q = query.toLowerCase();
+
 		const matchNome = i.nome.toLowerCase().includes(q);
 
 		const d = i.descrizione || {};
@@ -63,7 +64,8 @@ export default function ApplicativiList({ items = [], onUpdate }) {
 							key={item.id}
 							item={item}
 							onUpdate={onUpdate}
-							query={query}
+							highlight={query}
+							onDelete={onDelete}
 						/>
 					))}
 				</div>
