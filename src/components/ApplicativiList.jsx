@@ -10,13 +10,20 @@ export default function ApplicativiList({ items = [], onUpdate, onDelete }) {
 		if (tab === 'collaudo' && !i.collaudo) return false;
 
 		if (!query.trim()) return true;
+
 		const q = query.toLowerCase();
 
 		const matchNome = i.nome.toLowerCase().includes(q);
 
 		const d = i.descrizione || {};
 		const matchDescrizione = Object.values(d).some(
-			(val) => val && val.toLowerCase().includes(q)
+			(val) =>
+				val &&
+				typeof val === 'string' &&
+				val
+					.replace(/<[^>]+>/g, '')
+					.toLowerCase()
+					.includes(q)
 		);
 
 		return matchNome || matchDescrizione;
@@ -64,8 +71,8 @@ export default function ApplicativiList({ items = [], onUpdate, onDelete }) {
 							key={item.id}
 							item={item}
 							onUpdate={onUpdate}
-							highlight={query}
 							onDelete={onDelete}
+							highlight={query}
 						/>
 					))}
 				</div>

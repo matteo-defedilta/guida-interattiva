@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import ReactQuill from 'react-quill';
+import { fullToolbar } from '../editorConfig';
 
 export default function ApplicativoItem({
 	item,
@@ -9,6 +11,7 @@ export default function ApplicativoItem({
 	const [editing, setEditing] = useState(false);
 	const [confirmDelete, setConfirmDelete] = useState(false);
 
+	// Campi editor ricco
 	const [nome, setNome] = useState(item.nome);
 	const [generali, setGenerali] = useState(item.descrizione?.generali || '');
 	const [hostnames, setHostnames] = useState(item.descrizione?.hostnames || '');
@@ -41,7 +44,7 @@ export default function ApplicativoItem({
 		setEditing(false);
 	}
 
-	/** Highlight ricerca */
+	/** Evidenziazione ricerca */
 	function applyHighlight(text) {
 		if (!highlight || !text) return text;
 		const regex = new RegExp(`(${highlight})`, 'gi');
@@ -56,9 +59,9 @@ export default function ApplicativoItem({
 
 	return (
 		<div className='app-item'>
-			{/* ===========================
-			        POPUP CONFERMA ELIMINAZIONE
-			    =========================== */}
+			{/* =======================
+          POPUP ELIMINAZIONE
+      ======================== */}
 			{confirmDelete && (
 				<div className='delete-popup-backdrop'>
 					<div className='delete-popup'>
@@ -80,9 +83,9 @@ export default function ApplicativoItem({
 				</div>
 			)}
 
-			{/* ===========================
-			        MODIFICA
-			    =========================== */}
+			{/* =======================
+           MODIFICA (con Quill)
+      ======================== */}
 			{editing ? (
 				<div className='edit-view card'>
 					<h3 className='form-title'>Modifica applicativo</h3>
@@ -93,37 +96,51 @@ export default function ApplicativoItem({
 					<div className='multi-fields'>
 						<div className='desc-block'>
 							<label>Informazioni generali</label>
-							<textarea
+							<ReactQuill
+								theme='snow'
 								value={generali}
-								onChange={(e) => setGenerali(e.target.value)}
+								onChange={setGenerali}
+								modules={fullToolbar}
 							/>
 						</div>
+
 						<div className='desc-block'>
 							<label>Hostnames ed IP</label>
-							<textarea
+							<ReactQuill
+								theme='snow'
 								value={hostnames}
-								onChange={(e) => setHostnames(e.target.value)}
+								onChange={setHostnames}
+								modules={fullToolbar}
 							/>
 						</div>
+
 						<div className='desc-block'>
 							<label>Portali e Siti</label>
-							<textarea
+							<ReactQuill
+								theme='snow'
 								value={portali}
-								onChange={(e) => setPortali(e.target.value)}
+								onChange={setPortali}
+								modules={fullToolbar}
 							/>
 						</div>
+
 						<div className='desc-block'>
 							<label>Certificati</label>
-							<textarea
+							<ReactQuill
+								theme='snow'
 								value={certificati}
-								onChange={(e) => setCertificati(e.target.value)}
+								onChange={setCertificati}
+								modules={fullToolbar}
 							/>
 						</div>
+
 						<div className='desc-block'>
 							<label>Strumenti dell'applicazione</label>
-							<textarea
+							<ReactQuill
+								theme='snow'
 								value={strumenti}
-								onChange={(e) => setStrumenti(e.target.value)}
+								onChange={setStrumenti}
+								modules={fullToolbar}
 							/>
 						</div>
 					</div>
@@ -134,15 +151,16 @@ export default function ApplicativoItem({
 								type='checkbox'
 								checked={esercizio}
 								onChange={(e) => setEsercizio(e.target.checked)}
-							/>{' '}
+							/>
 							Esercizio
 						</label>
+
 						<label>
 							<input
 								type='checkbox'
 								checked={collaudo}
 								onChange={(e) => setCollaudo(e.target.checked)}
-							/>{' '}
+							/>
 							Collaudo
 						</label>
 					</div>
@@ -157,9 +175,9 @@ export default function ApplicativoItem({
 					</div>
 				</div>
 			) : (
-				/* ===========================
-				        VISUALIZZAZIONE
-				    =========================== */
+				// =======================
+				// VISUALIZZAZIONE
+				// =======================
 				<div className='view-view'>
 					<div className='title-row'>
 						<h3
@@ -182,47 +200,56 @@ export default function ApplicativoItem({
 						{item.descrizione.generali && (
 							<div className='desc-block'>
 								<h4>Informazioni generali</h4>
-								<p
+								<div
+									className='html-view'
 									dangerouslySetInnerHTML={{
 										__html: applyHighlight(item.descrizione.generali),
 									}}
 								/>
 							</div>
 						)}
+
 						{item.descrizione.hostnames && (
 							<div className='desc-block'>
 								<h4>Hostnames ed IP</h4>
-								<p
+								<div
+									className='html-view'
 									dangerouslySetInnerHTML={{
 										__html: applyHighlight(item.descrizione.hostnames),
 									}}
 								/>
 							</div>
 						)}
+
 						{item.descrizione.portali && (
 							<div className='desc-block'>
 								<h4>Portali e Siti</h4>
-								<p
+								<div
+									className='html-view'
 									dangerouslySetInnerHTML={{
 										__html: applyHighlight(item.descrizione.portali),
 									}}
 								/>
 							</div>
 						)}
+
 						{item.descrizione.certificati && (
 							<div className='desc-block'>
 								<h4>Certificati</h4>
-								<p
+								<div
+									className='html-view'
 									dangerouslySetInnerHTML={{
 										__html: applyHighlight(item.descrizione.certificati),
 									}}
 								/>
 							</div>
 						)}
+
 						{item.descrizione.strumenti && (
 							<div className='desc-block'>
 								<h4>Strumenti dell'applicazione</h4>
-								<p
+								<div
+									className='html-view'
 									dangerouslySetInnerHTML={{
 										__html: applyHighlight(item.descrizione.strumenti),
 									}}
@@ -235,6 +262,7 @@ export default function ApplicativoItem({
 						<button className='btn primary' onClick={() => setEditing(true)}>
 							Modifica
 						</button>
+
 						<button
 							className='btn danger'
 							onClick={() => setConfirmDelete(true)}

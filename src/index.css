@@ -20,7 +20,9 @@ body {
 	color: var(--text);
 }
 
-/* Layout generale */
+/* =========================================================
+   LAYOUT GENERALE
+   ========================================================= */
 .app-root {
 	max-width: 85%;
 	margin: 30px auto;
@@ -51,9 +53,9 @@ body {
 	flex: 1;
 }
 
-/* ================================
-   CARD + TITOLI
-   ================================ */
+/* =========================================================
+   CARD GENERICHE
+   ========================================================= */
 .card {
 	background: var(--card);
 	border-radius: var(--radius);
@@ -67,46 +69,59 @@ body {
 	color: var(--primary);
 }
 
-/* ================================
-   FORM — CREAZIONE + MODIFICA (UNIFICATI)
-   ================================ */
+/* =========================================================
+   FORM — CREAZIONE + MODIFICA
+   ========================================================= */
 .form label,
 .edit-view label {
 	display: block;
-	margin-bottom: 10px;
+	margin-bottom: 6px;
 	font-weight: 500;
 }
 
 .form input,
-.form textarea,
-.edit-view input,
-.edit-view textarea {
+.edit-view input {
 	width: 100%;
 	padding: 8px;
 	border: 1px solid var(--border);
 	border-radius: 6px;
-	margin-top: 4px;
-	background: white;
+	margin-bottom: 14px;
+	font-size: 14px;
+	background: #fff;
+}
+
+/* ReactQuill uniformato */
+.ql-container {
+	border-radius: 6px !important;
+	border-color: var(--border) !important;
+	min-height: 110px;
+	margin-bottom: 20px;
+}
+
+.ql-toolbar {
+	border-radius: 6px 6px 0 0 !important;
+	border-color: var(--border) !important;
+}
+
+.ql-editor {
+	min-height: 100px;
 	font-size: 14px;
 }
 
-.form textarea,
-.edit-view textarea {
-	resize: vertical;
-	min-height: 60px;
-}
-
+/* Checkbox row */
 .toggle-row {
 	display: flex;
-	gap: 12px;
-	margin: 10px 0;
+	gap: 16px;
+	margin-bottom: 14px;
 }
 
 .error {
 	color: #dc2626;
 	font-size: 14px;
+	margin-bottom: 10px;
 }
 
+/* Primary button */
 .btn-primary {
 	background: var(--primary);
 	color: #fff;
@@ -116,41 +131,17 @@ body {
 	cursor: pointer;
 	transition: 0.2s;
 }
-
 .btn-primary:hover {
 	background: var(--accent);
 }
 
-/* ================================
-   TABS
-   ================================ */
-.tabs {
-	display: flex;
-	gap: 8px;
-	margin-bottom: 14px;
-}
-
-.tabs button {
-	background: transparent;
-	border: 1px solid transparent;
-	border-radius: 8px;
-	padding: 6px 10px;
-	cursor: pointer;
-	color: var(--muted);
-}
-
-.tabs button.active {
-	background: var(--primary);
-	color: white;
-}
-
-/* ================================
+/* =========================================================
    LISTA APPLICATIVI
-   ================================ */
+   ========================================================= */
 .app-item {
 	border: 1px solid var(--border);
 	border-radius: 8px;
-	padding: 14px 16px;
+	padding: 16px;
 	margin-bottom: 12px;
 	background: #fff;
 }
@@ -161,84 +152,57 @@ body {
 	align-items: center;
 }
 
-/* BADGES */
 .badges {
 	display: flex;
 	gap: 6px;
 }
-
 .badge {
 	padding: 3px 8px;
 	border-radius: 12px;
 	font-size: 12px;
 	font-weight: 500;
 }
-
 .badge.esercizio {
 	background: #dbeafe;
 	color: #1e40af;
 }
-
 .badge.collaudo {
 	background: #fef9c3;
 	color: #92400e;
 }
 
-/* ACTIONS */
-.actions {
-	display: flex;
-	gap: 8px;
-	margin-top: 10px;
-}
-
-.actions button {
-	border: 1px solid var(--border);
-	background: var(--bg);
-	border-radius: 6px;
-	padding: 6px 10px;
-	cursor: pointer;
-}
-
-.empty {
-	color: var(--muted);
-	font-style: italic;
-}
-
-/* ================================
-   SEZIONI DESCRITTIVE (VIEW MODE)
-   ================================ */
+/* =========================================================
+   VIEW — SEZIONI DESCRITTIVE
+   ========================================================= */
 .desc-multi {
-	margin-top: 10px;
+	margin-top: 12px;
 	padding-left: 8px;
 	border-left: 3px solid var(--border);
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 12px;
 }
 
 .desc-block h4 {
 	margin: 0;
 	font-size: 14px;
-	font-weight: 600;
 	color: var(--primary);
+	font-weight: 600;
 }
 
 .desc-block p {
-	margin: 4px 0 0 0;
-	padding: 8px;
+	margin: 6px 0 0;
+	padding: 10px;
 	background: var(--bg);
 	border-radius: 6px;
 	border: 1px solid var(--border);
-	width: 100%;
-	white-space: pre-wrap;
-	word-break: break-word;
 	font-size: 14px;
-	color: var(--text);
+	word-break: break-word;
 }
 
-/* ================================
-   MODALITÀ MODIFICA — STILE CREAZIONE
-   ================================ */
+/* =========================================================
+   EDIT VIEW
+   ========================================================= */
 .edit-view {
 	background: var(--card);
 	border: 1px solid var(--border);
@@ -246,12 +210,7 @@ body {
 	padding: 15px;
 	display: flex;
 	flex-direction: column;
-	gap: 12px;
-}
-
-.edit-view input,
-.edit-view textarea {
-	background: white;
+	gap: 16px;
 }
 
 .edit-view .actions button {
@@ -259,6 +218,9 @@ body {
 	border-radius: 6px;
 }
 
+/* =========================================================
+   MODALE ELIMINAZIONE
+   ========================================================= */
 .delete-popup-backdrop {
 	position: fixed;
 	top: 0;
@@ -277,9 +239,9 @@ body {
 	padding: 22px;
 	border-radius: 12px;
 	max-width: 340px;
-	width: 100%;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	width: 90%;
 	text-align: center;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .btn.danger {
@@ -291,9 +253,9 @@ body {
 	background: #b91c1c;
 }
 
-/* ================================
+/* =========================================================
    SEARCH
-   ================================ */
+   ========================================================= */
 .search-input {
 	width: 100%;
 	padding: 8px 10px;
@@ -303,16 +265,16 @@ body {
 	font-size: 15px;
 }
 
-/* Evidenziazione ricerca */
+/* Highlight ricerca */
 mark {
 	background-color: yellow;
 	color: inherit;
 	padding: 0 2px;
 }
 
-/* ================================
+/* =========================================================
    MOBILE
-   ================================ */
+   ========================================================= */
 @media (max-width: 800px) {
 	.app-main {
 		flex-direction: column;

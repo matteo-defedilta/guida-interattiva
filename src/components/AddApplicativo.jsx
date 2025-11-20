@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import ReactQuill from 'react-quill';
+import { fullToolbar } from '../editorConfig';
 
 export default function AddApplicativo({ onAdd }) {
 	const [nome, setNome] = useState('');
@@ -13,9 +15,8 @@ export default function AddApplicativo({ onAdd }) {
 	const [esercizio, setEsercizio] = useState(true);
 	const [collaudo, setCollaudo] = useState(false);
 	const [error, setError] = useState('');
-	const [loading, setLoading] = useState(false);
 
-	async function handleSubmit(e) {
+	function handleSubmit(e) {
 		e.preventDefault();
 		setError('');
 
@@ -23,25 +24,25 @@ export default function AddApplicativo({ onAdd }) {
 			setError('Inserisci un nome valido.');
 			return;
 		}
+
 		if (!esercizio && !collaudo) {
 			setError('Seleziona almeno una modalità (Esercizio o Collaudo).');
 			return;
 		}
 
 		const nuovo = {
+			id: Date.now().toString(),
 			nome: nome.trim(),
 			descrizione: { ...descrizione },
 			esercizio,
 			collaudo,
-			dataCreazione: new Date().toISOString(),
 		};
 
-		setLoading(true);
-		await onAdd(nuovo); // l'ID arriva da Firestore
-		setLoading(false);
+		onAdd(nuovo);
 
-		// reset form
 		setNome('');
+		setEsercizio(true);
+		setCollaudo(false);
 		setDescrizione({
 			generali: '',
 			hostnames: '',
@@ -49,8 +50,6 @@ export default function AddApplicativo({ onAdd }) {
 			certificati: '',
 			strumenti: '',
 		});
-		setEsercizio(true);
-		setCollaudo(false);
 	}
 
 	return (
@@ -59,74 +58,62 @@ export default function AddApplicativo({ onAdd }) {
 
 			<form onSubmit={handleSubmit} className='form'>
 				<label>
-					Nome Applicativo
+					Nome applicativo
 					<input
 						type='text'
 						value={nome}
 						onChange={(e) => setNome(e.target.value)}
-						placeholder='Es. [MIRART] [LIMA]'
+						placeholder='Es. MIRART, LIMA...'
 					/>
 				</label>
 
 				<h3 className='subsection'>Informazioni aggiuntive</h3>
 
-				<label>
-					Informazioni generali
-					<textarea
-						value={descrizione.generali}
-						onChange={(e) =>
-							setDescrizione((prev) => ({ ...prev, generali: e.target.value }))
-						}
-						placeholder="Descrizione generale dell'applicativo..."
-					/>
-				</label>
+				<label>Informazioni generali</label>
+				<ReactQuill
+					theme='snow'
+					modules={fullToolbar}
+					value={descrizione.generali}
+					onChange={(v) => setDescrizione((prev) => ({ ...prev, generali: v }))}
+				/>
 
-				<label>
-					Hostnames ed IP
-					<textarea
-						value={descrizione.hostnames}
-						onChange={(e) =>
-							setDescrizione((prev) => ({ ...prev, hostnames: e.target.value }))
-						}
-						placeholder='Esempio: app01.local, 192.168.1.10...'
-					/>
-				</label>
+				<label>Hostnames ed IP</label>
+				<ReactQuill
+					theme='snow'
+					modules={fullToolbar}
+					value={descrizione.hostnames}
+					onChange={(v) =>
+						setDescrizione((prev) => ({ ...prev, hostnames: v }))
+					}
+				/>
 
-				<label>
-					Portali e Siti
-					<textarea
-						value={descrizione.portali}
-						onChange={(e) =>
-							setDescrizione((prev) => ({ ...prev, portali: e.target.value }))
-						}
-						placeholder='Link o nomi dei portali correlati...'
-					/>
-				</label>
+				<label>Portali e Siti</label>
+				<ReactQuill
+					theme='snow'
+					modules={fullToolbar}
+					value={descrizione.portali}
+					onChange={(v) => setDescrizione((prev) => ({ ...prev, portali: v }))}
+				/>
 
-				<label>
-					Certificati
-					<textarea
-						value={descrizione.certificati}
-						onChange={(e) =>
-							setDescrizione((prev) => ({
-								...prev,
-								certificati: e.target.value,
-							}))
-						}
-						placeholder='Certificati SSL, scadenze, ecc...'
-					/>
-				</label>
+				<label>Certificati</label>
+				<ReactQuill
+					theme='snow'
+					modules={fullToolbar}
+					value={descrizione.certificati}
+					onChange={(v) =>
+						setDescrizione((prev) => ({ ...prev, certificati: v }))
+					}
+				/>
 
-				<label>
-					Strumenti dell'applicazione
-					<textarea
-						value={descrizione.strumenti}
-						onChange={(e) =>
-							setDescrizione((prev) => ({ ...prev, strumenti: e.target.value }))
-						}
-						placeholder='Strumenti o componenti utilizzati...'
-					/>
-				</label>
+				<label>Strumenti dell'applicazione</label>
+				<ReactQuill
+					theme='snow'
+					modules={fullToolbar}
+					value={descrizione.strumenti}
+					onChange={(v) =>
+						setDescrizione((prev) => ({ ...prev, strumenti: v }))
+					}
+				/>
 
 				<div className='toggle-row'>
 					<label>
@@ -134,23 +121,24 @@ export default function AddApplicativo({ onAdd }) {
 							type='checkbox'
 							checked={esercizio}
 							onChange={(e) => setEsercizio(e.target.checked)}
-						/>{' '}
+						/>
 						Esercizio
 					</label>
+
 					<label>
 						<input
 							type='checkbox'
 							checked={collaudo}
 							onChange={(e) => setCollaudo(e.target.checked)}
-						/>{' '}
+						/>
 						Collaudo
 					</label>
 				</div>
 
 				{error && <p className='error'>{error}</p>}
 
-				<button type='submit' className='btn-primary' disabled={loading}>
-					{loading ? 'Salvataggio...' : 'Aggiungi'}
+				<button type='submit' className='btn-primary'>
+					Aggiungi
 				</button>
 			</form>
 		</div>
