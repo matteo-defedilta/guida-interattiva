@@ -1,76 +1,101 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AddApplicativo from './components/AddApplicativo';
 import ApplicativiList from './components/ApplicativiList';
-
-// servizi Firestore
+import { db } from './firebaseConfig';
 import {
-	getApplicativi,
-	saveApplicativo,
-	updateApplicativo,
-	deleteApplicativo,
-} from './services/applicativiService';
+	collection,
+	getDocs,
+	addDoc,
+	updateDoc,
+	doc,
+	deleteDoc,
+} from 'firebase/firestore';
 
 export default function App() {
 	const [applicativi, setApplicativi] = useState([]);
-	const [loading, setLoading] = useState(true);
+	const [showAdd, setShowAdd] = useState(false);
 
-	/** Carica dati dal DB all'avvio */
+	/* =========================
+      FIREBASE — CARICA DATI
+     ========================= */
 	useEffect(() => {
 		async function load() {
-			const dati = await getApplicativi();
-			setApplicativi(dati);
-			setLoading(false);
+			const snap = await getDocs(collection(db, 'applicativi'));
+			const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+			setApplicativi(list);
 		}
 		load();
 	}, []);
 
-	/** Salvataggio nuovo applicativo */
+	/* =========================
+      AGGIUNGI
+     ========================= */
 	const handleAdd = async (nuovo) => {
-		const salvato = await saveApplicativo(nuovo); // DB
-		setApplicativi((prev) => [salvato, ...prev]); // stato locale
+		const ref = await addDoc(collection(db, 'applicativi'), nuovo);
+		setApplicativi((prev) => [{ ...nuovo, id: ref.id }, ...prev]);
+		setShowAdd(false);
 	};
 
-	/** Aggiornamento applicativo esistente */
-	const handleUpdate = async (aggiornato) => {
-		const res = await updateApplicativo(aggiornato.id, aggiornato); // DB
+	/* =========================
+      MODIFICA
+     ========================= */
+	const handleUpdate = async (updated) => {
+		const docRef = doc(db, 'applicativi', updated.id);
+		await updateDoc(docRef, updated);
 
 		setApplicativi((prev) =>
-			prev.map((item) => (item.id === aggiornato.id ? res : item))
+			prev.map((i) => (i.id === updated.id ? updated : i))
 		);
 	};
-	/** Cancellazione applicativo */
+
+	/* =========================
+      ELIMINAZIONE
+     ========================= */
 	const handleDelete = async (id) => {
-		await deleteApplicativo(id);
+		await deleteDoc(doc(db, 'applicativi', id));
 		setApplicativi((prev) => prev.filter((i) => i.id !== id));
 	};
+
 	return (
 		<div className='app-root'>
+			{/* HEADER */}
 			<header className='app-header'>
 				<h1>Guida Interattiva</h1>
 				<p>Gestisci i tuoi applicativi (Esercizio / Collaudo)</p>
 			</header>
 
-			<main className='app-main'>
-				<section className='left'>
+			{/* =========================
+          SEZIONE LISTA (default)
+         ========================= */}
+			{!showAdd && (
+				<>
+					<button
+						className='btn-primary add-fullscreen-btn'
+						onClick={() => setShowAdd(true)}
+					>
+						➕ Aggiungi Applicativo
+					</button>
+
+					<ApplicativiList
+						items={applicativi}
+						onUpdate={handleUpdate}
+						onDelete={handleDelete}
+					/>
+				</>
+			)}
+
+			{/* =========================
+          SEZIONE FULLSCREEN FORM
+         ========================= */}
+			{showAdd && (
+				<div className='fullscreen-panel'>
+					<button className='close-btn' onClick={() => setShowAdd(false)}>
+						✖ Chiudi
+					</button>
+
 					<AddApplicativo onAdd={handleAdd} />
-				</section>
-
-				<section className='right'>
-					{loading ? (
-						<p>Caricamento...</p>
-					) : (
-						<ApplicativiList
-							items={applicativi}
-							onUpdate={handleUpdate}
-							onDelete={handleDelete}
-						/>
-					)}
-				</section>
-			</main>
-
-			<footer className='app-footer'>
-				<small>© 2025 Guida Interattiva — React + Vite</small>
-			</footer>
+				</div>
+			)}
 		</div>
 	);
 }

@@ -18,20 +18,12 @@ export default function AddApplicativo({ onAdd }) {
 
 	function handleSubmit(e) {
 		e.preventDefault();
-		setError('');
 
-		if (!nome.trim()) {
-			setError('Inserisci un nome valido.');
-			return;
-		}
-
-		if (!esercizio && !collaudo) {
-			setError('Seleziona almeno una modalità (Esercizio o Collaudo).');
-			return;
-		}
+		if (!nome.trim()) return setError('Inserisci un nome valido.');
+		if (!esercizio && !collaudo)
+			return setError('Seleziona almeno una modalità.');
 
 		const nuovo = {
-			id: Date.now().toString(),
 			nome: nome.trim(),
 			descrizione: { ...descrizione },
 			esercizio,
@@ -41,8 +33,6 @@ export default function AddApplicativo({ onAdd }) {
 		onAdd(nuovo);
 
 		setNome('');
-		setEsercizio(true);
-		setCollaudo(false);
 		setDescrizione({
 			generali: '',
 			hostnames: '',
@@ -50,10 +40,12 @@ export default function AddApplicativo({ onAdd }) {
 			certificati: '',
 			strumenti: '',
 		});
+		setEsercizio(true);
+		setCollaudo(false);
 	}
 
 	return (
-		<div className='card add-card'>
+		<div className='card add-card fullscreen-card'>
 			<h2 className='card-title'>➕ Aggiungi Applicativo</h2>
 
 			<form onSubmit={handleSubmit} className='form'>
@@ -74,7 +66,7 @@ export default function AddApplicativo({ onAdd }) {
 					theme='snow'
 					modules={fullToolbar}
 					value={descrizione.generali}
-					onChange={(v) => setDescrizione((prev) => ({ ...prev, generali: v }))}
+					onChange={(v) => setDescrizione((p) => ({ ...p, generali: v }))}
 				/>
 
 				<label>Hostnames ed IP</label>
@@ -82,9 +74,7 @@ export default function AddApplicativo({ onAdd }) {
 					theme='snow'
 					modules={fullToolbar}
 					value={descrizione.hostnames}
-					onChange={(v) =>
-						setDescrizione((prev) => ({ ...prev, hostnames: v }))
-					}
+					onChange={(v) => setDescrizione((p) => ({ ...p, hostnames: v }))}
 				/>
 
 				<label>Portali e Siti</label>
@@ -92,7 +82,7 @@ export default function AddApplicativo({ onAdd }) {
 					theme='snow'
 					modules={fullToolbar}
 					value={descrizione.portali}
-					onChange={(v) => setDescrizione((prev) => ({ ...prev, portali: v }))}
+					onChange={(v) => setDescrizione((p) => ({ ...p, portali: v }))}
 				/>
 
 				<label>Certificati</label>
@@ -100,9 +90,7 @@ export default function AddApplicativo({ onAdd }) {
 					theme='snow'
 					modules={fullToolbar}
 					value={descrizione.certificati}
-					onChange={(v) =>
-						setDescrizione((prev) => ({ ...prev, certificati: v }))
-					}
+					onChange={(v) => setDescrizione((p) => ({ ...p, certificati: v }))}
 				/>
 
 				<label>Strumenti dell'applicazione</label>
@@ -110,9 +98,7 @@ export default function AddApplicativo({ onAdd }) {
 					theme='snow'
 					modules={fullToolbar}
 					value={descrizione.strumenti}
-					onChange={(v) =>
-						setDescrizione((prev) => ({ ...prev, strumenti: v }))
-					}
+					onChange={(v) => setDescrizione((p) => ({ ...p, strumenti: v }))}
 				/>
 
 				<div className='toggle-row'>

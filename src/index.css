@@ -1,11 +1,25 @@
 :root {
 	--bg: #f4f6fb;
 	--card: #ffffff;
+
 	--primary: #2563eb;
-	--accent: #60a5fa;
+	--primary-dark: #1e4fc9;
+
+	--success: #16a34a;
+	--success-dark: #0d7a35;
+
+	--warning: #f59e0b;
+	--warning-dark: #c97c07;
+
+	--danger: #dc2626;
+	--danger-dark: #b91c1c;
+
+	--ghost: #e5e7eb;
+
 	--text: #1f2937;
 	--muted: #6b7280;
 	--border: #e5e7eb;
+
 	--radius: 10px;
 }
 
@@ -21,7 +35,7 @@ body {
 }
 
 /* =========================================================
-   LAYOUT GENERALE
+   STRUTTURA GENERALE
    ========================================================= */
 .app-root {
 	max-width: 85%;
@@ -31,7 +45,8 @@ body {
 
 .app-header h1 {
 	margin: 0;
-	font-size: 28px;
+	font-size: 32px;
+	font-weight: 700;
 	color: var(--primary);
 }
 
@@ -40,32 +55,124 @@ body {
 	margin-bottom: 20px;
 }
 
-.app-main {
-	display: flex;
-	gap: 20px;
-}
-
-.left {
-	flex: 0 0 340px;
-}
-
-.right {
-	flex: 1;
-}
-
 /* =========================================================
-   CARD GENERICHE
+   CARD
    ========================================================= */
 .card {
 	background: var(--card);
 	border-radius: var(--radius);
-	padding: 20px;
+	padding: 22px;
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .card-title {
 	margin-top: 0;
-	font-size: 18px;
+	font-size: 20px;
+	color: var(--primary);
+	font-weight: 600;
+	margin-bottom: 20px;
+}
+
+/* =========================================================
+   BOTTONE “AGGIUNGI APPLICATIVO”
+   ========================================================= */
+.add-fullscreen-btn {
+	margin-bottom: 18px;
+	padding: 12px 22px;
+	font-size: 16px !important;
+}
+
+/* =========================================================
+   CTA — BOTTONI
+   ========================================================= */
+.btn,
+.btn-primary,
+.btn-success,
+.btn-warning,
+.btn-danger,
+.btn-ghost {
+	padding: 10px 16px;
+	border-radius: 8px;
+	cursor: pointer;
+	font-size: 14px;
+	border: none;
+	transition: 0.2s;
+	font-weight: 500;
+}
+
+.btn-primary {
+	background: var(--primary);
+	color: white;
+}
+.btn-primary:hover {
+	background: var(--primary-dark);
+}
+
+.btn-success {
+	background: var(--success);
+	color: white;
+}
+.btn-success:hover {
+	background: var(--success-dark);
+}
+
+.btn-warning {
+	background: var(--warning);
+	color: white;
+}
+.btn-warning:hover {
+	background: var(--warning-dark);
+}
+
+.btn-danger {
+	background: var(--danger);
+	color: white;
+}
+.btn-danger:hover {
+	background: var(--danger-dark);
+}
+
+.btn-ghost {
+	background: var(--ghost);
+	color: var(--text);
+}
+.btn-ghost:hover {
+	background: #d1d5db;
+}
+
+/* =========================================================
+   FULLSCREEN PANEL (Add Applicativo)
+   ========================================================= */
+.fullscreen-panel {
+	width: 100%;
+	background: var(--card);
+	border-radius: var(--radius);
+	padding: 20px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	animation: slideInRight 0.35s ease forwards;
+}
+
+@keyframes slideInRight {
+	from {
+		opacity: 0;
+		transform: translateX(40px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+.close-btn {
+	background: none;
+	border: none;
+	color: var(--muted);
+	font-size: 17px;
+	cursor: pointer;
+	padding: 4px 8px;
+	margin-bottom: 10px;
+}
+.close-btn:hover {
 	color: var(--primary);
 }
 
@@ -75,64 +182,64 @@ body {
 .form label,
 .edit-view label {
 	display: block;
-	margin-bottom: 6px;
-	font-weight: 500;
+	font-weight: 600;
+	color: var(--primary);
+	font-size: 15px;
+	margin-top: 10px;
+	margin-bottom: 8px;
+}
+
+.subsection {
+	font-size: 18px;
+	color: var(--primary);
+	font-weight: 700;
+	margin: 18px 0 10px;
 }
 
 .form input,
 .edit-view input {
 	width: 100%;
-	padding: 8px;
+	padding: 12px;
 	border: 1px solid var(--border);
 	border-radius: 6px;
-	margin-bottom: 14px;
 	font-size: 14px;
 	background: #fff;
+	margin-bottom: 18px;
 }
 
 /* ReactQuill uniformato */
-.ql-container {
-	border-radius: 6px !important;
-	border-color: var(--border) !important;
-	min-height: 110px;
-	margin-bottom: 20px;
-}
-
 .ql-toolbar {
 	border-radius: 6px 6px 0 0 !important;
 	border-color: var(--border) !important;
 }
 
+.ql-container {
+	border-color: var(--border) !important;
+	border-radius: 0 0 6px 6px !important;
+	min-height: 150px;
+	margin-bottom: 25px;
+}
+
 .ql-editor {
-	min-height: 100px;
-	font-size: 14px;
+	min-height: 140px;
+	font-size: 15px;
+	padding: 14px !important;
 }
 
 /* Checkbox row */
 .toggle-row {
 	display: flex;
-	gap: 16px;
+	gap: 20px;
+	margin-top: 10px;
 	margin-bottom: 14px;
+	font-size: 15px;
+	font-weight: 600;
 }
 
 .error {
-	color: #dc2626;
+	color: var(--danger);
 	font-size: 14px;
 	margin-bottom: 10px;
-}
-
-/* Primary button */
-.btn-primary {
-	background: var(--primary);
-	color: #fff;
-	border: none;
-	border-radius: 6px;
-	padding: 10px 16px;
-	cursor: pointer;
-	transition: 0.2s;
-}
-.btn-primary:hover {
-	background: var(--accent);
 }
 
 /* =========================================================
@@ -140,10 +247,27 @@ body {
    ========================================================= */
 .app-item {
 	border: 1px solid var(--border);
-	border-radius: 8px;
-	padding: 16px;
-	margin-bottom: 12px;
+	border-radius: 12px;
+	padding: 18px;
+	margin-bottom: 16px;
 	background: #fff;
+	transition: 0.25s;
+}
+
+.app-item:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.app-item .view-view .actions {
+	margin-top: 10px;
+}
+.app-item .view-view .actions .primary {
+	background-color: var(--warning);
+	margin-right: 10px;
+}
+.app-item .view-view .actions .danger {
+	background-color: var(--danger);
 }
 
 .title-row {
@@ -152,15 +276,44 @@ body {
 	align-items: center;
 }
 
+/* TABS */
+.tabs {
+	display: flex;
+	gap: 10px;
+	margin-bottom: 16px;
+}
+
+.tabs button {
+	padding: 10px 18px;
+	border-radius: 8px;
+	background: var(--ghost);
+	border: 1px solid var(--border);
+	cursor: pointer;
+	color: var(--text);
+	font-weight: 500;
+	transition: 0.2s;
+}
+
+.tabs button:hover {
+	background: #d1d5db;
+}
+
+.tabs .active {
+	background: var(--primary);
+	color: white;
+	border-color: var(--primary);
+}
+
+/* BADGES */
 .badges {
 	display: flex;
 	gap: 6px;
 }
 .badge {
-	padding: 3px 8px;
-	border-radius: 12px;
+	padding: 4px 8px;
+	border-radius: 8px;
 	font-size: 12px;
-	font-weight: 500;
+	font-weight: 600;
 }
 .badge.esercizio {
 	background: #dbeafe;
@@ -172,32 +325,33 @@ body {
 }
 
 /* =========================================================
-   VIEW — SEZIONI DESCRITTIVE
+   SEZIONI DESCRITTIVE — VIEW
    ========================================================= */
 .desc-multi {
-	margin-top: 12px;
-	padding-left: 8px;
+	margin-top: 16px;
+	padding-left: 10px;
 	border-left: 3px solid var(--border);
 	display: flex;
 	flex-direction: column;
-	gap: 12px;
+	gap: 16px;
 }
 
 .desc-block h4 {
-	margin: 0;
-	font-size: 14px;
+	margin-bottom: 5px;
+	font-size: 16px;
 	color: var(--primary);
 	font-weight: 600;
 }
-
-.desc-block p {
-	margin: 6px 0 0;
-	padding: 10px;
+.html-view {
 	background: var(--bg);
 	border-radius: 6px;
 	border: 1px solid var(--border);
-	font-size: 14px;
-	word-break: break-word;
+}
+.desc-block p {
+	margin: 8px 0 0;
+	padding: 14px;
+	font-size: 15px;
+	line-height: 1.45;
 }
 
 /* =========================================================
@@ -207,15 +361,29 @@ body {
 	background: var(--card);
 	border: 1px solid var(--border);
 	border-radius: var(--radius);
-	padding: 15px;
+	padding: 20px;
 	display: flex;
 	flex-direction: column;
-	gap: 16px;
+	gap: 18px;
 }
 
-.edit-view .actions button {
-	padding: 8px 14px;
-	border-radius: 6px;
+.edit-view .actions {
+	display: flex;
+	gap: 12px;
+	margin-top: 10px;
+}
+
+.edit-view .actions .btn {
+	background: var(--warning);
+}
+.edit-view .actions .btn:hover {
+	background: var(--warning-dark);
+}
+.edit-view .actions .primary {
+	background: var(--success);
+}
+.edit-view .actions .primary:hover {
+	background: var(--success-dark);
 }
 
 /* =========================================================
@@ -236,7 +404,7 @@ body {
 
 .delete-popup {
 	background: white;
-	padding: 22px;
+	padding: 26px;
 	border-radius: 12px;
 	max-width: 340px;
 	width: 90%;
@@ -244,13 +412,25 @@ body {
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.btn.danger {
-	background: #dc2626;
-	color: white;
-	border: none;
+.delete-popup .actions {
+	margin-top: 18px;
+	display: flex;
+	gap: 12px;
+	justify-content: center;
 }
-.btn.danger:hover {
-	background: #b91c1c;
+
+.delete-popup .actions .btn {
+	background: var(--warning);
+}
+.delete-popup .actions .btn:hover {
+	background: var(--warning-dark);
+}
+
+.delete-popup .actions .danger {
+	background: var(--danger);
+}
+.delete-popup .actions .danger:hover {
+	background: var(--danger-dark);
 }
 
 /* =========================================================
@@ -258,28 +438,27 @@ body {
    ========================================================= */
 .search-input {
 	width: 100%;
-	padding: 8px 10px;
-	margin-bottom: 14px;
-	border-radius: 6px;
+	padding: 12px 16px;
+	margin-bottom: 16px;
+	border-radius: 8px;
 	border: 1px solid var(--border);
 	font-size: 15px;
+	background: #fff;
+	position: sticky;
+	top: 0;
+	z-index: 99;
 }
 
-/* Highlight ricerca */
 mark {
 	background-color: yellow;
-	color: inherit;
-	padding: 0 2px;
+	padding: 0 3px;
 }
 
 /* =========================================================
-   MOBILE
+   RESPONSIVE
    ========================================================= */
 @media (max-width: 800px) {
-	.app-main {
-		flex-direction: column;
-	}
-	.left {
-		flex: unset;
+	.app-root {
+		max-width: 95%;
 	}
 }
